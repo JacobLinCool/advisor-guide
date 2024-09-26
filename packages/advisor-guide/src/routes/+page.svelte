@@ -5,6 +5,9 @@
     import AdvisorList from "$lib/components/AdvisorList.svelte";
     import SEO from "$lib/components/SEO.svelte";
     import Fuse from "fuse.js";
+    import { page } from "$app/stores";
+    import { goto } from "$app/navigation";
+    import { browser } from "$app/environment";
 
     export let data: { metadata: ThesisMetadata[] };
 
@@ -18,12 +21,32 @@
         ? fuse.search(keywordSearch).map((result) => result.item)
         : allKeywords;
 
+    $: {
+        if (browser) {
+            // Update URL with selected keywords
+            const searchParams = new URLSearchParams($page.url.searchParams);
+            searchParams.delete("keywords");
+            searchParams.append("keywords", selectedKeywords.join(","));
+            goto(`?${searchParams.toString()}`, {
+                replaceState: true,
+                keepFocus: true,
+                noScroll: true,
+            });
+        }
+    }
+
     onMount(() => {
         guide = new AdvisorGuide(data.metadata);
         allKeywords = guide.keywords;
         fuse = new Fuse(allKeywords, {
             threshold: 0.3,
         });
+
+        // Initialize selectedKeywords from URL
+        const urlKeywords = $page.url.searchParams.get("keywords");
+        if (urlKeywords) {
+            selectedKeywords = urlKeywords.split(",");
+        }
     });
 
     function toggleKeyword(keyword: string) {
