@@ -1,0 +1,30 @@
+{
+    "private": true,
+    "name": "advisor-guide",
+    "version": "0.0.1",
+    "scripts": {
+        "dev": "vite dev",
+        "build": "vite build",
+        "preview": "vite preview",
+        "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
+        "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch"
+    },
+    "devDependencies": {
+        "@sveltejs/adapter-auto": "^3.2.5",
+        "@sveltejs/kit": "^2.5.28",
+        "@sveltejs/vite-plugin-svelte": "^3.1.2",
+        "@tailwindcss/typography": "^0.5.15",
+        "advisor-guide-core": "workspace:*",
+        "autoprefixer": "^10.4.20",
+        "daisyui": "^4.12.10",
+        "fuse.js": "^7.0.0",
+        "globals": "^15.9.0",
+        "postcss": "^8.4.47",
+        "svelte": "^4.2.19",
+        "svelte-check": "^4.0.3",
+        "tailwindcss": "^3.4.13",
+        "typescript": "^5.6.2",
+        "vite": "^5.4.8"
+    },
+    "type": "module"
+}

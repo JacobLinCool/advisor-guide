@@ -1,0 +1,21 @@
+{
+    "name": "advisor-guide-fetcher",
+    "version": "0.0.0",
+    "description": "",
+    "keywords": [],
+    "author": "JacobLinCool <jacoblincool@gmail.com> (https://github.com/JacobLinCool)",
+    "license": "MIT",
+    "scripts": {},
+    "devDependencies": {
+        "@types/debug": "^4.1.12",
+        "@types/node": "^22.7.3",
+        "tsup": "^8.3.0",
+        "tsx": "^4.19.1",
+        "typescript": "^5.6.2"
+    },
+    "dependencies": {
+        "advisor-guide-core": "workspace:*",
+        "cheerio": "^1.0.0",
+        "debug": "^4.3.7"
+    }
+}
