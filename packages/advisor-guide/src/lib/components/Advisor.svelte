@@ -1,5 +1,6 @@
 <script lang="ts">
     import type { Advisor } from "advisor-guide-core";
+    import { slide } from 'svelte/transition';
 
     export let advisor: Advisor;
     export let matchedKeywords: string[] = [];
@@ -17,6 +18,8 @@
     function isKeywordMatched(keyword: string): boolean {
         return matchedKeywords.includes(keyword);
     }
+
+    let showOtherKeywords = false;
 </script>
 
 <article class="card bg-base-100 shadow-xl mb-4">
@@ -31,12 +34,24 @@
             </ul>
         </section>
         <section>
-            <h4 class="font-semibold">Other Keywords:</h4>
-            <ul class="flex flex-wrap gap-1 mt-1" aria-label="Other keywords">
-                {#each unmatchedKeywords as keyword}
-                    <li><span class="badge badge-secondary">{keyword}</span></li>
-                {/each}
-            </ul>
+            <h4 class="font-semibold">
+                Other Keywords:
+                <button
+                    class="btn btn-xs btn-ghost"
+                    on:click={() => showOtherKeywords = !showOtherKeywords}
+                    aria-expanded={showOtherKeywords}
+                    aria-controls="other-keywords"
+                >
+                    {showOtherKeywords ? 'Hide' : 'Show'}
+                </button>
+            </h4>
+            {#if showOtherKeywords}
+                <ul id="other-keywords" class="flex flex-wrap gap-1 mt-1" aria-label="Other keywords" transition:slide>
+                    {#each unmatchedKeywords as keyword}
+                        <li><span class="badge badge-secondary">{keyword}</span></li>
+                    {/each}
+                </ul>
+            {/if}
         </section>
         <section>
             <h4 class="font-semibold">Theses:</h4>
