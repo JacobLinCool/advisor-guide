@@ -30,10 +30,10 @@
                 bind:value={selectedYearValue}
                 on:input={handleYearChange}
                 class="range range-sm range-primary"
+                style="direction: rtl;"
             />
         </div>
         <div class="flex justify-between w-full text-sm font-semibold">
-            <span>From {selectedYearValue}</span>
             <span>
                 {#if yearsFromNewest === 0}
                     Most recent year
@@ -41,6 +41,7 @@
                     {yearsFromNewest} year{yearsFromNewest === 1 ? "" : "s"} from most recent
                 {/if}
             </span>
+            <span>From {selectedYearValue}</span>
         </div>
     </div>
 </div>
