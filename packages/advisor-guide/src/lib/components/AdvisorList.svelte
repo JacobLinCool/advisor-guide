@@ -14,7 +14,11 @@
             ),
             theses: advisor.thesis.filter((thesis) => {
                 const thesisYear = parseInt(thesis.year, 10);
-                return !selectedYear || thesisYear >= selectedYear;
+                const yearInrange = !selectedYear || thesisYear >= selectedYear;
+                const keywordMatched = thesis.keywords.some((keyword) =>
+                    selectedKeywords.includes(keyword),
+                );
+                return yearInrange && keywordMatched;
             }),
         }))
         .filter(({ matchedKeywords, theses }) => matchedKeywords.length > 0 && theses.length > 0)
