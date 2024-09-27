@@ -14,6 +14,8 @@
     export let data;
 
     let guide: AdvisorGuide;
+    let loading = true;
+
     let allKeywords: string[] = [];
     let selectedKeywords: string[] = [];
     let keywordSearch = "";
@@ -46,6 +48,7 @@
 
     onMount(() => {
         guide = new AdvisorGuide(data.institution);
+        loading = false;
         allKeywords = guide.keywords;
         fuse = new Fuse(allKeywords, {
             threshold: 0.3,
@@ -95,8 +98,20 @@
 />
 
 <main class="container mx-auto p-4 min-h-screen flex flex-col">
-    {#if guide}
-        <a href=".."><h1 class="text-xl font-bold">Advisor Guide</h1></a>
+    <a href=".."><h1 class="text-xl font-bold">Advisor Guide</h1></a>
+
+    {#if loading}
+        <div
+            class="flex flex-col items-center justify-center gap-4 h-64 flex-grow"
+            in:fade={{ duration: 300 }}
+        >
+            <span class="loading loading-dots loading-lg text-primary"></span>
+            <p class="text-xl font-semibold text-gray-700">Loading advisor information...</p>
+            <p class="text-sm text-gray-500">
+                This may take a few moments. Thank you for your patience!
+            </p>
+        </div>
+    {:else}
         {#if guide.institution.link}
             <a href={guide.institution.link} target="_blank" rel="noopener noreferrer">
                 <h2 class="text-3xl font-bold mb-6">{guide.institution.name}</h2>
@@ -150,17 +165,6 @@
                 />
             {/if}
         </section>
-    {:else}
-        <div
-            class="flex flex-col items-center justify-center gap-4 h-64 flex-grow"
-            in:fade={{ duration: 300 }}
-        >
-            <span class="loading loading-dots loading-lg text-primary"></span>
-            <p class="text-xl font-semibold text-gray-700">Loading advisor information...</p>
-            <p class="text-sm text-gray-500">
-                This may take a few moments. Thank you for your patience!
-            </p>
-        </div>
     {/if}
 </main>
 

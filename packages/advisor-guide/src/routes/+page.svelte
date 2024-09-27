@@ -1,6 +1,7 @@
 <script lang="ts">
     import SEO from "$lib/components/SEO.svelte";
     import Footer from "$lib/components/Footer.svelte";
+    import { navigating } from "$app/stores";
 
     export let data;
 
@@ -22,7 +23,7 @@
                 <li>
                     <a
                         href={`/${institution.key}`}
-                        class="block p-4 bg-base-200 rounded-lg hover:bg-base-300 transition-colors"
+                        class="block p-4 bg-base-200 rounded-lg hover:bg-base-300 transition-colors relative"
                     >
                         <h3 class="text-lg font-semibold mb-2">{institution.name}</h3>
                         <div class="text-sm text-gray-600">
@@ -34,6 +35,11 @@
                                 <span>{institution.thesisCount} Theses</span>
                             </p>
                         </div>
+                        {#if $navigating && $navigating.to?.url.pathname === `/${institution.key}`}
+                            <div class="absolute inset-0 bg-base-200 bg-opacity-75 flex items-center justify-center">
+                                <span class="loading loading-dots loading-md text-primary"></span>
+                            </div>
+                        {/if}
                     </a>
                 </li>
             {/each}
