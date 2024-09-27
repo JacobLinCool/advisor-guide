@@ -92,9 +92,11 @@
 </script>
 
 <SEO
-    title="Advisor Guide - Find Your Perfect Research Mentor"
-    description="Use our Advisor Guide to find the perfect research mentor. Search by keywords and explore advisor profiles to make an informed decision for your academic journey."
-    keywords="advisor guide, research mentor, thesis advisor, graduate studies, academic research"
+    title="Advisor Guide for {data.institution.name}"
+    description="Use our Advisor Guide to find the perfect research mentor in {data.institution
+        .name}. Search by thesis keywords and explore advisor profiles to make an informed decision for your academic journey."
+    keywords="advisor guide, research mentor, thesis advisor, graduate studies, academic research, {data
+        .institution.name}"
 />
 
 <main class="container mx-auto p-4 min-h-screen flex flex-col">
