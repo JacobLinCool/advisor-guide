@@ -4,6 +4,7 @@
 
     export let advisors: Advisor[] = [];
     export let selectedKeywords: string[] = [];
+    export let selectedYear: number | null = null;
 
     $: filteredAdvisors = advisors
         .map((advisor) => ({
@@ -11,13 +12,17 @@
             matchedKeywords: advisor.keywords.filter((keyword) =>
                 selectedKeywords.includes(keyword),
             ),
+            theses: advisor.thesis.filter((thesis) => {
+                const thesisYear = parseInt(thesis.year, 10);
+                return !selectedYear || thesisYear >= selectedYear;
+            }),
         }))
-        .filter(({ matchedKeywords }) => matchedKeywords.length > 0)
+        .filter(({ matchedKeywords, theses }) => matchedKeywords.length > 0 && theses.length > 0)
         .sort((a, b) => b.matchedKeywords.length - a.matchedKeywords.length);
 </script>
 
 <div class="space-y-4">
-    {#each filteredAdvisors as { advisor, matchedKeywords }}
-        <AdvisorComponent {advisor} {matchedKeywords} />
+    {#each filteredAdvisors as { advisor, matchedKeywords, theses }}
+        <AdvisorComponent {advisor} {matchedKeywords} {theses} />
     {/each}
 </div>
