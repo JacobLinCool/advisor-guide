@@ -1,6 +1,7 @@
 import type { ThesisMetadata } from "advisor-guide-core";
 import * as cheerio from "cheerio";
 import debug from "debug";
+import { ThesisFetcher } from "../fetcher";
 
 export interface QueryOptions {
     sort_by?: string;
@@ -17,22 +18,28 @@ export interface Item {
     department: string;
 }
 
-export const DEFAULT_SEARCH_HOST = "https://tdr.lib.ntu.edu.tw";
+export const TW_NTU_DEFAULT_SEARCH_HOST = "https://tdr.lib.ntu.edu.tw";
 
-export class ThesisFetcherNTU {
+const logger = debug("ThesisFetcherNTU");
+
+export class ThesisFetcherNTU extends ThesisFetcher {
     private readonly host: string;
-    public log = debug("ThesisFetcherNTU");
+    private readonly department: string;
+    public readonly log: debug.Debugger;
 
-    constructor(host = DEFAULT_SEARCH_HOST) {
+    constructor(department: string, host = TW_NTU_DEFAULT_SEARCH_HOST) {
+        super();
+        this.department = department;
         this.host = host;
+        this.log = logger.extend(department);
     }
 
-    public async query(department: string, options: QueryOptions = {}): Promise<string> {
+    public async query(options: QueryOptions = {}): Promise<string> {
         const qs = new URLSearchParams();
         qs.set("query", "");
         qs.set("filter_field_1", "dept");
         qs.set("filter_type_1", "contains");
-        qs.set("filter_value_1", department);
+        qs.set("filter_value_1", this.department);
         qs.set("sort_by", options.sort_by || "dc.date.issued_dt");
         qs.set("order", options.order || "desc");
         qs.set("rpp", String(options.rpp || 100));
@@ -67,11 +74,11 @@ export class ThesisFetcherNTU {
         return items;
     }
 
-    public async list(department: string, rpp = 100): Promise<Item[]> {
+    public async list(rpp = 100): Promise<Item[]> {
         const items: Item[] = [];
         let start = 0;
         while (true) {
-            const html = await this.query(department, { start, rpp });
+            const html = await this.query({ start, rpp });
             const parsed = this.parse(html);
             if (parsed.length === 0) {
                 break;
@@ -148,5 +155,22 @@ export class ThesisFetcherNTU {
             abstract,
             link,
         };
+    }
+
+    async fetchAll(): Promise<ThesisMetadata[]> {
+        const items = await this.list();
+        let finished = 0;
+
+        const metadata = await Promise.all(
+            items.map((item) =>
+                this.throttle.run(() => {
+                    const res = this.fetch(item);
+                    this.log(`Fetched ${++finished}/${items.length}`);
+                    return res;
+                }),
+            ),
+        );
+
+        return metadata;
     }
 }

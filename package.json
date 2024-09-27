@@ -8,7 +8,7 @@
         "prepare": "husky",
         "test": "vitest",
         "format": "prettier --ignore-path .gitignore --write .",
-        "build-demo": "pnpm -r --filter advisor-guide-core build && tsx packages/advisor-guide-fetcher/scripts/fetch-ntu.ts && mkdir -p packages/advisor-guide/data && mv 資訊工程學研究所.json packages/advisor-guide/data && pnpm -r build"
+        "build-demo": "pnpm -r --filter advisor-guide-core build && mkdir -p packages/advisor-guide/data && tsx packages/advisor-guide-fetcher/scripts/fetch-ntu.ts 資訊工程學研究所 && mv 資訊工程學研究所.json packages/advisor-guide/data/ntu-csie.json && tsx packages/advisor-guide-fetcher/scripts/fetch-ntu.ts 資訊網路與多媒體研究所 && mv 資訊網路與多媒體研究所.json packages/advisor-guide/data/ntu-ginm.json && tsx packages/advisor-guide-fetcher/scripts/fetch-ntu.ts 電機工程學研究所 && mv 電機工程學研究所.json packages/advisor-guide/data/ntu-ee.json && pnpm -r build"
     },
     "devDependencies": {
         "@types/node": "^22.7.3",

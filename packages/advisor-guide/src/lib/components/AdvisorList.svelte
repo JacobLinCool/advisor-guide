@@ -9,7 +9,7 @@
     $: filteredAdvisors = advisors
         .map((advisor) => ({
             advisor,
-            matchedKeywords: advisor.keywords.filter((keyword) =>
+            matchedKeywords: Object.keys(advisor.keywords).filter((keyword) =>
                 selectedKeywords.includes(keyword),
             ),
             theses: advisor.thesis.filter((thesis) => {

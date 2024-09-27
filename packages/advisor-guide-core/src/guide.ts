@@ -1,52 +1,56 @@
-import type { Advisor, ThesisMetadata } from "./types";
+import type { Advisor, Institution, ThesisMetadata } from "./types";
 
 export class AdvisorGuide {
-    private readonly metadata: ThesisMetadata[];
-    public advisors: Advisor[] = [];
+    public readonly institution: Institution;
 
-    constructor(metadata: ThesisMetadata[]) {
-        this.metadata = metadata;
-        this.build();
+    constructor(institution: Institution) {
+        this.institution = institution;
     }
 
-    private build(): void {
+    public static build(
+        institutionName: string,
+        metadata: ThesisMetadata[],
+        institutionLink?: string,
+    ): Institution {
         const advisorMap = new Map<string, Advisor>();
-        const keywordMap = new Map<string, Record<string, number>>();
+        const keywordMap: Record<string, Record<string, number>> = {};
 
-        for (const thesis of this.metadata) {
+        for (const thesis of metadata) {
             const { advisor: advisorName, keywords } = thesis;
 
             let advisor = advisorMap.get(advisorName);
             if (!advisor) {
-                advisor = { name: advisorName, keywords: [], thesis: [] };
+                advisor = { name: advisorName, keywords: {}, thesis: [] };
                 advisorMap.set(advisorName, advisor);
             }
 
             advisor.thesis.push(thesis);
 
-            let keywordCount = keywordMap.get(advisorName) ?? {};
+            let keywordCount = keywordMap[advisorName] ?? {};
             for (const keyword of keywords) {
                 const count = keywordCount[keyword] ?? 0;
                 keywordCount[keyword] = count + 1;
             }
-            keywordMap.set(advisorName, keywordCount);
+            keywordMap[advisorName] = keywordCount;
         }
 
         for (const advisor of advisorMap.values()) {
-            const keywordCount = keywordMap.get(advisor.name) ?? {};
-            advisor.keywords = Object.entries(keywordCount)
-                .sort((a, b) => b[1] - a[1])
-                .map(([keyword]) => keyword);
+            advisor.keywords = keywordMap[advisor.name] ?? {};
         }
 
-        this.advisors = Array.from(advisorMap.values());
+        return {
+            name: institutionName,
+            advisors: Array.from(advisorMap.values()),
+            link: institutionLink,
+        };
     }
 
     public get keywords(): string[] {
         const keywordCounts = new Map<string, number>();
-        this.advisors.forEach((advisor) => {
-            advisor.keywords.forEach((keyword) => {
-                keywordCounts.set(keyword, (keywordCounts.get(keyword) || 0) + 1);
+        this.institution.advisors.forEach((advisor) => {
+            Object.entries(advisor.keywords).forEach(([keyword, count]) => {
+                const currentCount = keywordCounts.get(keyword) ?? 0;
+                keywordCounts.set(keyword, currentCount + count);
             });
         });
         return Array.from(keywordCounts.entries())

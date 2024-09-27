@@ -10,6 +10,13 @@ export interface ThesisMetadata {
 
 export interface Advisor {
     name: string;
-    keywords: string[];
+    link?: string;
+    keywords: Record<string, number>;
     thesis: ThesisMetadata[];
+}
+
+export interface Institution {
+    name: string;
+    link?: string;
+    advisors: Advisor[];
 }

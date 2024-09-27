@@ -7,7 +7,9 @@
     export let matchedKeywords: string[] = [];
     export let theses: ThesisMetadata[] = [];
 
-    $: unmatchedKeywords = advisor.keywords.filter((keyword) => !matchedKeywords.includes(keyword));
+    $: unmatchedKeywords = Object.keys(advisor.keywords).filter(
+        (keyword) => !matchedKeywords.includes(keyword),
+    );
 
     $: sortedTheses = theses
         .map((thesis) => ({
