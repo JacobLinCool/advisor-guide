@@ -69,9 +69,9 @@
 
         allYears = [
             ...new Set(
-                guide.institution.advisors.flatMap((advisor) =>
-                    advisor.thesis.map((thesis) => parseInt(thesis.year, 10)),
-                ),
+                guide.institution.advisors
+                    .flatMap((advisor) => advisor.thesis.map((thesis) => parseInt(thesis.year, 10)))
+                    .filter((year) => year > 0),
             ),
         ].sort((a, b) => a - b);
     });

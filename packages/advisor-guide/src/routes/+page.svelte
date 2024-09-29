@@ -36,7 +36,9 @@
                             </p>
                         </div>
                         {#if $navigating && $navigating.to?.url.pathname === `/${institution.key}`}
-                            <div class="absolute inset-0 bg-base-200 bg-opacity-75 flex items-center justify-center">
+                            <div
+                                class="absolute inset-0 bg-base-200 bg-opacity-75 flex items-center justify-center"
+                            >
                                 <span class="loading loading-dots loading-md text-primary"></span>
                             </div>
                         {/if}
