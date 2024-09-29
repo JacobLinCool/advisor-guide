@@ -46,7 +46,7 @@
         }
     }
 
-    onMount(() => {
+    onMount(async () => {
         guide = new AdvisorGuide(data.institution);
         loading = false;
         allKeywords = guide.keywords;

@@ -82,7 +82,7 @@ export class ThesisFetcherNDLTD extends ThesisFetcher {
         return count;
     }
 
-    private async retry<T>(fn: () => Promise<T>, n: number = 3): Promise<T> {
+    private async retry<T>(fn: () => Promise<T>, n: number = 5): Promise<T> {
         let err: Error | undefined;
         for (let i = 0; i < n; i++) {
             try {

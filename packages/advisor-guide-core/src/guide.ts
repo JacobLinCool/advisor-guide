@@ -1,4 +1,4 @@
-import type { Advisor, Institution, ThesisMetadata } from "./types";
+import type { Advisor, Institution, InstitutionMetadata, ThesisMetadata } from "./types";
 
 export class AdvisorGuide {
     public readonly institution: Institution;
@@ -56,5 +56,22 @@ export class AdvisorGuide {
         return Array.from(keywordCounts.entries())
             .sort((a, b) => b[1] - a[1])
             .map(([keyword]) => keyword);
+    }
+
+    public metadata(key: string): InstitutionMetadata {
+        const advisorCount = this.institution.advisors.length;
+        const keywordCount = this.keywords.length;
+        const thesisCount = this.institution.advisors.reduce(
+            (sum, advisor) => sum + advisor.thesis.length,
+            0,
+        );
+
+        return {
+            key,
+            name: this.institution.name,
+            advisorCount,
+            keywordCount,
+            thesisCount,
+        };
     }
 }

@@ -20,3 +20,11 @@ export interface Institution {
     link?: string;
     advisors: Advisor[];
 }
+
+export interface InstitutionMetadata {
+    key: string;
+    name: string;
+    advisorCount: number;
+    keywordCount: number;
+    thesisCount: number;
+}
