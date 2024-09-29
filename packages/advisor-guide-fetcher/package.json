@@ -5,7 +5,12 @@
     "keywords": [],
     "author": "JacobLinCool <jacoblincool@gmail.com> (https://github.com/JacobLinCool)",
     "license": "MIT",
-    "scripts": {},
+    "scripts": {
+        "sync:push": "rclone copy data r2:advisor-guide-data",
+        "sync:pull": "rclone copy r2:advisor-guide-data data",
+        "download": "tsx scripts/build-data.ts",
+        "sync": "rm -rf data && pnpm sync:pull && pnpm download && pnpm sync:push"
+    },
     "devDependencies": {
         "@types/debug": "^4.1.12",
         "@types/node": "^22.7.3",
