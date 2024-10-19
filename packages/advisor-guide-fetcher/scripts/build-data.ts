@@ -48,8 +48,18 @@ async function downloadNDLTD(dir: string) {
         "nycu-computer-science": ["國立陽明交通大學", "資訊科學與工程研究所"],
         "nycu-multimedia": ["國立陽明交通大學", "多媒體工程研究所"],
         "nycu-data-science": ["國立陽明交通大學", "數據科學與工程研究所"],
+        "nycu-ee": ["國立陽明交通大學", "電機工程學系"],
         "nthu-cs": ["國立清華大學", "資訊工程學系"],
         "nthu-isa": ["國立清華大學", "資訊系統與應用研究所"],
+        "nthu-ee": ["國立清華大學", "電機工程學系"],
+        "ncku-csie": ["國立成功大學", "資訊工程學系"],
+        "ncku-ee": ["國立成功大學", "電機工程學系"],
+        "ntust-csie": ["國立臺灣科技大學", "資訊工程系"],
+        "ntust-ee": ["國立臺灣科技大學", "電機工程系"],
+        "ntust-im": ["國立臺灣科技大學", "資訊管理系"],
+        "ntust-ece": ["國立臺灣科技大學", "電子工程系"],
+        "ncu-csie": ["國立中央大學", "資訊工程學系"],
+        "ncu-ee": ["國立中央大學", "電機工程學系"],
     };
 
     for (const key in entries) {
